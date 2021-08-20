@@ -3,9 +3,10 @@ const mysql = require('mysql');
 const path = require('path');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
-const app = express();
-const port = 8080;
 
+const WEB_SERVER_PORT = 8080;
+
+const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
@@ -20,11 +21,6 @@ var con = mysql.createConnection({
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
-  // var sql = "SELECT * FROM users";
-  // con.query(sql, function (err, result, fields) {
-  //   if (err) throw err;
-  //   console.log(result[0].email);
-  // });
 });
 
 // app.get('/', (req, res) => {
@@ -40,7 +36,7 @@ app.get('/', (req, res) => {
     var sql = "SELECT * FROM users";
     con.query(sql, function (err, result, fields) {
       if (err) throw err;
-      console.log(result);
+      // console.log(result);
       res.render('index',{users : result});
     });
 });
@@ -51,11 +47,11 @@ app.get('/insert', (req, res) => {res.sendFile(path.join(__dirname, 'html/form.h
 //신규 사용자 정보를 테이블에 입력하고 초기 화면으로 리다이렉트 한다.
 app.post('/', (req, res) => {
    var sql = "INSERT INTO users SET ?";
-   console.log(req.body);
+   // console.log(req.body);
    con.query(sql, req.body, function (err, result, fields) {
      if (err) throw err;
-     console.log(result);
-     //res.send('입력되었습니다.');
+     // console.log(result);
+     // res.send('입력되었습니다.');
      res.redirect('/'); //초기 목록 화면으로 리다이렉트
      });
 });
@@ -69,6 +65,24 @@ app.get('/delete/:id', (req, res) => {
     });
 });
 
+app.get('/edit/:id', (req, res) => {
+  var sql = "SELECT * FROM users WHERE id = ?";
+  con.query(sql, [req.params.id], function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.render('edit',{user : result});
+    });
+});
+
+app.post('/update/:id', (req, res) => {
+  var sql = "UPDATE users SET ? WHERE id = " + req.params.id;
+  console.log(req.body);
+  con.query(sql, req.body,  function (err, result, fields) {
+    if (err) throw err;
+    res.redirect('/'); //초기 목록 화면으로 리다이렉트
+    });
+});
+
 app.get('/summer', (req, res) => res.send('아직 여름입니다.'))
 app.get('/winter', (req, res) => res.send('겨울에는 추워요!!'))
-app.listen(port, () => console.log('서버가 시작되었습니다.'))
+app.listen(WEB_SERVER_PORT, () => console.log('서버가 시작되었습니다.'))

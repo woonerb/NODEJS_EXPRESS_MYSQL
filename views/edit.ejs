@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>사용자 정보 변경</title>
+</head>
+<body>
+<h1>사용자 정보 변경 양식</h1>
+<form action="/update/<%= user[0].id %>" method="POST">
+    name: <input type="text" name="name" value="<%= user[0].name %>"><br>
+    email: <input type="text" name="email" value="<%= user[0].email %>"><br>
+    <button type="submit">변경</button>
+</form>
+<BR>
+	<a href="/">사용자 목록보기</a>
+</body>
+</html>
