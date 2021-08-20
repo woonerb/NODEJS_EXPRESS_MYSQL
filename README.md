@@ -16,7 +16,9 @@ node.js로 서버를 기동하며 <= +Web Framework로 express.js를 사용한�
 
 • mariadb 설치 (DB)  ->db user, password의 변경이 필요하다
 choco install mariadb -y
+
 • mysql.workbench 설치 (DB 접근 클라이언트)
 choco install mysql.workbench -y
+
 • nodejs의 설치
 choco install nodejs-lts  
